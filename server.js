@@ -71,6 +71,8 @@ app.get('/blog/:slug', (req, res) =>
   res.sendFile(path.join(__dirname, 'blog/post.html'))
 );
 
+app.get('/favicon.ico', (req, res) => res.status(204).end());
+
 // ── 404 fallback ───────────────────────────────────────────
 app.use((req, res) => {
   if (req.path.startsWith('/api/')) {
