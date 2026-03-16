@@ -244,8 +244,8 @@ async function loadHomeProducts() {
           <div class="hc-cat text-xs text-muted font-semibold uppercase tracking-wider mb-4">${p.category_name || 'PRODUCT'}</div>
           <h3 class="text-sm font-bold text-dark mb-8">${p.name}</h3>
           <div class="hc-footer flex-between items-center mt-16 pt-16 border-top">
-            <div class="hc-price font-bold text-blue">£${parseFloat(p.price_from).toFixed(2)} <span class="text-xs text-muted font-normal">/ item</span></div>
-            <a href="/product/${p.slug}" class="hc-btn text-xs font-semibold text-blue hover-underline">Customize <i class="fas fa-arrow-right text-xs ml-4"></i></a>
+            <div class="hc-price font-bold text-blue">£${parseFloat(p.price_from).toFixed(2)} <span class="text-xs text-muted font-normal">/ node</span></div>
+            <a href="/product/${p.slug}" class="hc-btn text-xs font-semibold text-blue hover-underline">Inspect <i class="fas fa-arrow-right text-xs ml-4"></i></a>
           </div>
         </div>
       </div>

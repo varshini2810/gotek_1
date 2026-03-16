@@ -315,12 +315,12 @@
           <h3 class="text-sm font-bold text-dark mb-8" style="flex:1;">${p.name}</h3>
           
           <div class="hc-footer mt-16 pt-16 border-top">
-            <div class="hc-price font-bold text-blue mb-16">£${parseFloat(p.price_from).toFixed(2)} <span class="text-xs text-muted font-normal">/ item</span></div>
+            <div class="hc-price font-bold text-blue mb-16">£${parseFloat(p.price_from).toFixed(2)} <span class="text-xs text-muted font-normal">/ node</span></div>
             <div style="display:flex; gap:8px;">
               <a href="/product/${p.slug}" class="btn-secondary-saas" style="flex:1; padding:8px; font-size:12px;">Inspect</a>
               <button onclick="addToCart(${p.id},'${p.name.replace(/'/g,"\\'")}');return false;"
                 class="btn-primary-saas" style="flex:1; padding:8px; font-size:12px;">
-                <i class="fas fa-plus mr-4"></i> Basket
+                <i class="fas fa-plus mr-4"></i> +Queue
               </button>
             </div>
           </div>
