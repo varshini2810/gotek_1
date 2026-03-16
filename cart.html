@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Deployment Queue – GOTEK</title>
+  <title>Shopping Basket – ID Card Platform</title>
   <link rel="stylesheet" href="/css/style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -85,8 +85,8 @@
 <!-- Minimal Glass Navigation -->
 <nav class="saas-nav bg-white border-bottom shadow-sm" id="mainNav" style="padding: 12px 0;">
   <div class="nav-container">
-    <a href="/" class="nav-logo" aria-label="GOTEK Home">
-      <img src="/images/gotek_logo.png" alt="GOTEK Logo" />
+    <a href="/" class="nav-logo" aria-label="ID Card Platform Home">
+      <img src="/images/gotek_logo.png" alt="ID Card Platform Logo" />
     </a>
     <ul class="nav-links">
       <li><a href="/">Home</a></li>
@@ -123,11 +123,11 @@
     <!-- Breadcrumb -->
     <div style="margin-bottom: 24px;">
       <span style="color:var(--text-muted);font-size:13px;font-weight:500;">
-        <a href="/" style="color:var(--primary-blue);text-decoration:none;">Dashboard</a> <i class="fas fa-chevron-right" style="font-size:10px;margin:0 8px;color:var(--text-light)"></i> <span style="color:var(--text-main);">Deployment Queue</span>
+        <a href="/" style="color:var(--primary-blue);text-decoration:none;">Dashboard</a> <i class="fas fa-chevron-right" style="font-size:10px;margin:0 8px;color:var(--text-light)"></i> <span style="color:var(--text-main);">Shopping Basket</span>
       </span>
     </div>
 
-    <h1><i class="fas fa-database text-blue" style="margin-right:12px;"></i> Deployment Queue</h1>
+    <h1><i class="fas fa-shopping-basket text-blue" style="margin-right:12px;"></i> Shopping Basket</h1>
     
     <div id="cartContent">
       <div style="text-align:center;padding:60px;color:var(--primary-blue);"><i class="fas fa-circle-notch fa-spin fa-3x"></i></div>
@@ -159,8 +159,8 @@ async function loadCart() {
 
   if (!data.items || data.items.length === 0) {
     el.innerHTML = `<div class="empty-cart">
-      <i class="fas fa-satellite-dish"></i>
-      <h2 class="text-dark font-bold text-2xl mb-12">Queue is Empty</h2>
+      <i class="fas fa-shopping-cart"></i>
+      <h2 class="text-dark font-bold text-2xl mb-12">Your Basket is Empty</h2>
       <p class="text-muted mb-24">No items have been added to your cart.</p>
       <a href="/products" class="btn-primary-saas">View Catalog</a>
     </div>`;
@@ -224,7 +224,7 @@ async function removeItem(id) {
   loadCart();
 }
 async function clearCart() {
-  if (confirm('Purge all staged modules from the deployment queue?')) { 
+  if (confirm('Clear all items from your shopping basket?')) { 
     await fetch('/api/cart', { method: 'DELETE' }); 
     loadCart(); 
   }

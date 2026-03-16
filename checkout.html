@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Secure Provisioning – GOTEK</title>
+  <title>Secure Checkout – ID Card Platform</title>
   <link rel="stylesheet" href="/css/style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -73,8 +73,8 @@
 <!-- Minimal Glass Navigation -->
 <nav class="saas-nav bg-white border-bottom shadow-sm" id="mainNav" style="padding: 12px 0;">
   <div class="nav-container">
-    <a href="/" class="nav-logo" aria-label="GOTEK Home">
-      <img src="/images/gotek_logo.png" alt="GOTEK Logo" />
+    <a href="/" class="nav-logo" aria-label="ID Card Platform Home">
+      <img src="/images/gotek_logo.png" alt="ID Card Platform Logo" />
     </a>
     <ul class="nav-links">
       <li><a href="/">Home</a></li>
@@ -111,11 +111,11 @@
     <!-- Breadcrumb -->
     <div style="margin-bottom: 24px;">
       <span style="color:var(--text-muted);font-size:13px;font-weight:500;">
-        <a href="/" style="color:var(--primary-blue);text-decoration:none;">Dashboard</a> <i class="fas fa-chevron-right" style="font-size:10px;margin:0 8px;color:var(--text-light)"></i> <a href="/cart" style="color:var(--primary-blue);text-decoration:none;">Queue</a> <i class="fas fa-chevron-right" style="font-size:10px;margin:0 8px;color:var(--text-light)"></i> <span style="color:var(--text-main);">Provisioning</span>
+        <a href="/" style="color:var(--primary-blue);text-decoration:none;">Dashboard</a> <i class="fas fa-chevron-right" style="font-size:10px;margin:0 8px;color:var(--text-light)"></i> <a href="/cart" style="color:var(--primary-blue);text-decoration:none;">Basket</a> <i class="fas fa-chevron-right" style="font-size:10px;margin:0 8px;color:var(--text-light)"></i> <span style="color:var(--text-main);">Checkout</span>
       </span>
     </div>
 
-    <h1><i class="fas fa-lock text-green" style="margin-right:12px;"></i> Secure Provisioning</h1>
+    <h1><i class="fas fa-lock text-green" style="margin-right:12px;"></i> Secure Checkout</h1>
     <div id="checkoutContent"></div>
   </div>
 </section>
@@ -143,9 +143,9 @@ async function initCheckout() {
   if (!data.items || data.items.length === 0) {
     document.getElementById('checkoutContent').innerHTML = `
       <div style="text-align:center;padding:80px 20px;background:#ffffff;border-radius:12px;border:1px dashed var(--border-focus);box-shadow:var(--shadow-sm);">
-        <i class="fas fa-database text-light" style="font-size:60px;display:block;margin-bottom:20px;"></i>
-        <h2 class="text-dark font-bold text-2xl mb-12">No Modules Staged</h2>
-        <a href="/products" class="btn-primary-saas" style="margin-top:20px;">Deploy Hardware</a>
+        <i class="fas fa-shopping-basket text-light" style="font-size:60px;display:block;margin-bottom:20px;"></i>
+        <h2 class="text-dark font-bold text-2xl mb-12">No Items in Basket</h2>
+        <a href="/products" class="btn-primary-saas" style="margin-top:20px;">View Catalog</a>
       </div>`;
     return;
   }
@@ -249,12 +249,12 @@ async function initCheckout() {
           </div>`;
       } else {
         errorEl.textContent = data.error; errorEl.style.display = 'block';
-        btn.innerHTML = `<i class="fas fa-satellite-dish mr-8"></i> INITIATE PROVISIONING – £${data.total}`; btn.disabled = false;
+        btn.innerHTML = `<i class="fas fa-shopping-bag mr-8"></i> PLACE ORDER – £${data.total}`; btn.disabled = false;
         window.scrollTo({top:0, behavior:'smooth'});
       }
     } catch(err) {
       errorEl.textContent = 'Network partition detected. Please retry.'; errorEl.style.display = 'block';
-      btn.innerHTML = `<i class="fas fa-satellite-dish mr-8"></i> INITIATE PROVISIONING – £${data.total}`; btn.disabled = false;
+      btn.innerHTML = `<i class="fas fa-shopping-bag mr-8"></i> PLACE ORDER – £${data.total}`; btn.disabled = false;
       window.scrollTo({top:0, behavior:'smooth'});
     }
   });

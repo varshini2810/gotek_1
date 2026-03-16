@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mission Logs – GOTEK</title>
+  <title>Order History – ID Card Platform</title>
   <link rel="stylesheet" href="/css/style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -52,8 +52,8 @@
 <!-- Minimal Glass Navigation -->
 <nav class="saas-nav bg-white border-bottom shadow-sm" id="mainNav" style="padding: 12px 0;">
   <div class="nav-container">
-    <a href="/" class="nav-logo" aria-label="GOTEK Home">
-      <img src="/images/gotek_logo.png" alt="GOTEK Logo" />
+    <a href="/" class="nav-logo" aria-label="ID Card Platform Home">
+      <img src="/images/gotek_logo.png" alt="ID Card Platform Logo" />
     </a>
     <ul class="nav-links">
       <li><a href="/">Home</a></li>
@@ -155,9 +155,9 @@ async function loadOrders() {
     el.innerHTML = `
       <div class="not-logged">
         <i class="fas fa-box-open"></i>
-        <h2>No Active Deployments</h2>
-        <p>Your hardware provision ledger is currently clear.</p>
-        <a href="/products" class="btn-primary-saas"><i class="fas fa-microchip mr-8"></i> INITIALIZE HARDWARE</a>
+        <h2>No Orders Found</h2>
+        <p>You haven't placed any orders yet.</p>
+        <a href="/products" class="btn-primary-saas"><i class="fas fa-shopping-bag mr-8"></i> BROWSE CATALOG</a>
       </div>`;
     return;
   }
@@ -174,7 +174,7 @@ async function loadOrders() {
   el.innerHTML = `
     <div class="orders-card">
       <table class="orders-table">
-        <thead><tr><th>Operation Ref</th><th>Timestamp</th><th>Principal</th><th>Valuation</th><th>Phase</th></tr></thead>
+        <thead><tr><th>Order Ref</th><th>Date</th><th>Customer</th><th>Total</th><th>Status</th></tr></thead>
         <tbody>${rows}</tbody>
       </table>
     </div>`;

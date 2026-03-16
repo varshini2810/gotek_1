@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GOTEK Central Command</title>
+  <title>ID Card Platform Admin</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
@@ -168,23 +168,23 @@
 <!-- Sidebar -->
 <aside class="sidebar">
   <div class="sidebar-logo">
-    <img src="../images/gotek_logo.png" alt="GOTEK">
+    <img src="../images/gotek_logo.png" alt="ID Card Platform">
     <div>
-      <div class="brand">GOTEK</div>
-      <div class="sub">Central Command</div>
+      <div class="brand">ID Card Platform</div>
+      <div class="sub">Management Portal</div>
     </div>
   </div>
   <nav class="sidebar-nav">
-    <span class="nav-label">Telemetry</span>
-    <div class="nav-item active" onclick="showSection('dashboard')"><i class="fas fa-satellite-dish"></i> Status</div>
-    <span class="nav-label">Infrastructure</span>
-    <div class="nav-item" onclick="showSection('products')"><i class="fas fa-microchip"></i> Hardware Nodes</div>
-    <div class="nav-item" onclick="showSection('categories')"><i class="fas fa-network-wired"></i> Sub-Systems</div>
-    <span class="nav-label">Operations</span>
-    <div class="nav-item" onclick="showSection('orders')"><i class="fas fa-box-open"></i> Deployments</div>
-    <div class="nav-item" onclick="showSection('contacts')"><i class="fas fa-shield-alt"></i> Security Logs</div>
-    <span class="nav-label">Access Control</span>
-    <div class="nav-item" onclick="showSection('users')"><i class="fas fa-fingerprint"></i> Clearances</div>
+    <span class="nav-label">Analytics</span>
+    <div class="nav-item active" onclick="showSection('dashboard')"><i class="fas fa-chart-bar"></i> Overview</div>
+    <span class="nav-label">Catalog</span>
+    <div class="nav-item" onclick="showSection('products')"><i class="fas fa-tag"></i> Products</div>
+    <div class="nav-item" onclick="showSection('categories')"><i class="fas fa-folder"></i> Categories</div>
+    <span class="nav-label">Sales</span>
+    <div class="nav-item" onclick="showSection('orders')"><i class="fas fa-shopping-bag"></i> Orders</div>
+    <div class="nav-item" onclick="showSection('contacts')"><i class="fas fa-envelope"></i> Enquiries</div>
+    <span class="nav-label">User Management</span>
+    <div class="nav-item" onclick="showSection('users')"><i class="fas fa-users"></i> Users</div>
   </nav>
   <div class="sidebar-footer">
     <a href="/"><i class="fas fa-globe"></i> View Public Interface</a>
@@ -195,7 +195,7 @@
 <!-- Main -->
 <div class="main">
   <div class="topbar">
-    <h1 id="pageTitle">Diagnostic Status</h1>
+    <h1 id="pageTitle">Admin Dashboard</h1>
     <div class="topbar-right">
       <span id="adminName"><i class="fas fa-user-shield"></i> Root</span>
       <span id="currentTime" style="font-family:monospace; font-size:14px; color:var(--text-light);"></span>
@@ -206,31 +206,31 @@
     <div id="authCheck" style="display:none;text-align:center;padding:80px 20px;background:var(--bg-surface);border-radius:12px;border:1px solid var(--border-light);box-shadow:var(--shadow-sm);">
       <i class="fas fa-lock" style="font-size:60px;color:var(--accent-red);display:block;margin-bottom:20px;"></i>
       <h2 style="color:var(--text-main);margin-bottom:10px;font-weight:800;">Security Clearance Required</h2>
-      <p style="color:var(--text-muted);margin-bottom:30px;">Authenticate to access GOTEK Central Command.</p>
-      <a href="/login" class="btn btn-primary">INITIATE HANDSHAKE</a>
+      <p style="color:var(--text-muted);margin-bottom:30px;">Authenticate to access ID Card Platform Admin.</p>
+      <a href="/login" class="btn btn-primary">SECURE LOGIN</a>
     </div>
 
     <!-- DASHBOARD -->
     <div class="section active" id="section-dashboard" style="background:transparent;border:none;box-shadow:none;">
       <div class="stats-grid" id="statsGrid">
-        <div class="stat-card"><div class="stat-icon blue"><i class="fas fa-server"></i></div><div><div class="stat-value" id="s-orders">—</div><div class="stat-label">Deployments</div></div></div>
-        <div class="stat-card"><div class="stat-icon green"><i class="fas fa-chart-line"></i></div><div><div class="stat-value" id="s-revenue">—</div><div class="stat-label">Gross Revenue</div></div></div>
-        <div class="stat-card"><div class="stat-icon purple"><i class="fas fa-id-card-alt"></i></div><div><div class="stat-value" id="s-customers">—</div><div class="stat-label">Active Clients</div></div></div>
-        <div class="stat-card"><div class="stat-icon teal"><i class="fas fa-microchip"></i></div><div><div class="stat-value" id="s-products">—</div><div class="stat-label">Hardware Pool</div></div></div>
-        <div class="stat-card stat-link" onclick="showSection('orders')"><div class="stat-icon orange"><i class="fas fa-broadcast-tower"></i></div><div><div class="stat-value" id="s-pending">—</div><div class="stat-label">Awaiting Provision</div></div></div>
-        <div class="stat-card stat-link" onclick="showSection('contacts')"><div class="stat-icon red"><i class="fas fa-clipboard-list"></i></div><div><div class="stat-value" id="s-enquiries">—</div><div class="stat-label">Action Required</div></div></div>
+        <div class="stat-card"><div class="stat-icon blue"><i class="fas fa-shopping-bag"></i></div><div><div class="stat-value" id="s-orders">—</div><div class="stat-label">Total Orders</div></div></div>
+        <div class="stat-card"><div class="stat-icon green"><i class="fas fa-pound-sign"></i></div><div><div class="stat-value" id="s-revenue">—</div><div class="stat-label">Gross Revenue</div></div></div>
+        <div class="stat-card"><div class="stat-icon purple"><i class="fas fa-user-friends"></i></div><div><div class="stat-value" id="s-customers">—</div><div class="stat-label">Active Customers</div></div></div>
+        <div class="stat-card"><div class="stat-icon teal"><i class="fas fa-tag"></i></div><div><div class="stat-value" id="s-products">—</div><div class="stat-label">Product Count</div></div></div>
+        <div class="stat-card stat-link" onclick="showSection('orders')"><div class="stat-icon orange"><i class="fas fa-clock"></i></div><div><div class="stat-value" id="s-pending">—</div><div class="stat-label">Pending Orders</div></div></div>
+        <div class="stat-card stat-link" onclick="showSection('contacts')"><div class="stat-icon red"><i class="fas fa-inbox"></i></div><div><div class="stat-value" id="s-enquiries">—</div><div class="stat-label">New Enquiries</div></div></div>
       </div>
       <div class="section" style="display:block;">
-        <div class="section-header"><h2><i class="fas fa-history text-blue"></i> Latest Deployments</h2><button class="btn btn-secondary btn-sm" onclick="showSection('orders')">Expand Logs</button></div>
-        <div class="section-body"><div id="recentOrders">Loading telemetry...</div></div>
+        <div class="section-header"><h2><i class="fas fa-history text-blue"></i> Recent Orders</h2><button class="btn btn-secondary btn-sm" onclick="showSection('orders')">View All</button></div>
+        <div class="section-body"><div id="recentOrders">Loading dashboard...</div></div>
       </div>
     </div>
 
     <!-- PRODUCTS -->
     <div class="section" id="section-products">
       <div class="section-header">
-        <h2><i class="fas fa-microchip text-blue"></i> Hardware Nodes</h2>
-        <button class="btn btn-primary btn-sm" onclick="openProductModal()"><i class="fas fa-plus mr-4"></i> Initialize Node</button>
+        <h2><i class="fas fa-tag text-blue"></i> Product Management</h2>
+        <button class="btn btn-primary btn-sm" onclick="openProductModal()"><i class="fas fa-plus mr-4"></i> Add Product</button>
       </div>
       <div class="section-body">
         <div id="alertProducts"></div>
@@ -240,26 +240,26 @@
 
     <!-- CATEGORIES -->
     <div class="section" id="section-categories">
-      <div class="section-header"><h2><i class="fas fa-network-wired text-blue"></i> Sub-Systems</h2></div>
-      <div class="section-body"><div id="categoriesTable">Syncing matrix...</div></div>
+      <div class="section-header"><h2><i class="fas fa-folder text-blue"></i> Categories</h2></div>
+      <div class="section-body"><div id="categoriesTable">Loading...</div></div>
     </div>
 
     <!-- ORDERS -->
     <div class="section" id="section-orders">
-      <div class="section-header"><h2><i class="fas fa-box-open text-blue"></i> Full Deployment Log</h2></div>
-      <div class="section-body"><div id="ordersTable">Fetching archives...</div></div>
+      <div class="section-header"><h2><i class="fas fa-shopping-bag text-blue"></i> Full Order History</h2></div>
+      <div class="section-body"><div id="ordersTable">Loading...</div></div>
     </div>
 
     <!-- CONTACTS -->
     <div class="section" id="section-contacts">
-      <div class="section-header"><h2><i class="fas fa-shield-alt text-blue"></i> Security Logs & Enquiries</h2></div>
-      <div class="section-body"><div id="contactsTable">Filtering logs...</div></div>
+      <div class="section-header"><h2><i class="fas fa-envelope text-blue"></i> Customer Enquiries</h2></div>
+      <div class="section-body"><div id="contactsTable">Loading...</div></div>
     </div>
 
     <!-- USERS -->
     <div class="section" id="section-users">
-      <div class="section-header"><h2><i class="fas fa-fingerprint text-blue"></i> Access Clearances</h2></div>
-      <div class="section-body"><div id="usersTable">Fetching ledger...</div></div>
+      <div class="section-header"><h2><i class="fas fa-users text-blue"></i> User Accounts</h2></div>
+      <div class="section-body"><div id="usersTable">Loading...</div></div>
     </div>
   </div>
 </div>

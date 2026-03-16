@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login – GOTEK</title>
+  <title>Login – ID Card Platform</title>
   <link rel="stylesheet" href="/css/style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -51,39 +51,39 @@
 <!-- Minimal Navigation -->
 <nav class="saas-nav bg-white border-bottom shadow-sm" style="padding: 16px 0;">
   <div class="nav-container" style="justify-content: center;">
-    <a href="/" class="nav-logo" aria-label="GOTEK Home">
-      <img src="/images/gotek_logo.png" alt="GOTEK Logo" style="height: 32px;" />
+    <a href="/" class="nav-logo" aria-label="ID Card Platform Home">
+      <img src="/images/gotek_logo.png" alt="ID Card Platform Logo" style="height: 32px;" />
     </a>
   </div>
 </nav>
 
 <section class="auth-page">
   <div class="auth-box">
-    <h1><i class="fas fa-fingerprint text-blue mr-8"></i> Authorize Access</h1>
-    <p class="sub">Establish a secure connection to the GOTEK network.</p>
+    <h1><i class="fas fa-user-lock text-blue mr-8"></i> Secure Login</h1>
+    <p class="sub">Sign in to your ID Card Platform account.</p>
     
     <div class="error-msg" id="errorMsg"></div>
     <div class="success-msg" id="successMsg"></div>
     
     <form id="loginForm">
       <div class="form-group">
-        <label for="email">Secure Email Vector</label>
+        <label for="email">Email Address</label>
         <div style="position: relative;">
           <i class="fas fa-envelope text-muted" style="position: absolute; left: 14px; top: 16px;"></i>
-          <input type="email" id="email" name="email" placeholder="agent@gotek.tech" required style="padding-left: 40px;" />
+          <input type="email" id="email" name="email" placeholder="email@example.com" required style="padding-left: 40px;" />
         </div>
       </div>
       <div class="form-group">
-        <label for="password">Authentication Key</label>
+        <label for="password">Password</label>
         <div style="position: relative;">
           <i class="fas fa-key text-muted" style="position: absolute; left: 14px; top: 16px;"></i>
           <input type="password" id="password" name="password" placeholder="••••••••" required style="padding-left: 40px;" />
         </div>
       </div>
-      <button type="submit" class="btn-full"><i class="fas fa-satellite-dish mr-8"></i> INITIATE HANDSHAKE</button>
+      <button type="submit" class="btn-full"><i class="fas fa-sign-in-alt mr-8"></i> SECURE SIGN IN</button>
     </form>
     
-    <p class="auth-link">Require clearance? <a href="/register">Request Access</a></p>
+    <p class="auth-link">New customer? <a href="/register">Create Account</a></p>
   </div>
 </section>
 

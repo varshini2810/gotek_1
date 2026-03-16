@@ -24,8 +24,8 @@
      ============================== -->
 <nav class="saas-nav" id="mainNav">
   <div class="nav-container">
-    <a href="/" class="nav-logo" aria-label="GOTEK Home">
-      <img src="images/gotek_logo.png" alt="GOTEK Logo" />
+    <a href="/" class="nav-logo" aria-label="ID Card Platform Home">
+      <img src="images/gotek_logo.png" alt="ID Card Platform Logo" />
     </a>
     
     <ul class="nav-links">
@@ -99,7 +99,7 @@
 
     <!-- Floating UI Mockup Representation -->
     <div class="hero-visual">
-       <img src="images/gotek_hero_bg.png" alt="GOTEK Interface" class="floating-mockup shadow-lg border-light" style="border-radius:16px;">
+       <img src="images/gotek_hero_bg.png" alt="ID Card Platform Interface" class="floating-mockup shadow-lg border-light" style="border-radius:16px;">
        <div class="abstract-ring ring-1 border-blue-light"></div>
        <div class="abstract-ring ring-2 border-blue-light"></div>
     </div>
@@ -131,7 +131,7 @@
   <div class="container">
     <div class="footer-grid pt-60 pb-40">
       <div class="footer-brand">
-        <img src="images/gotek_logo.png" alt="ID Platform" style="height:24px; margin-bottom:16px;">
+        <img src="images/gotek_logo.png" alt="ID Card Platform" style="height:24px; margin-bottom:16px;">
         <p class="text-muted text-sm pr-20" style="line-height:1.6; max-width:280px;">
           Your trusted source for professional ID cards, lanyards, badge holders, and accessories.
         </p>
@@ -241,11 +241,11 @@ async function loadHomeProducts() {
           <img src="${p.image || 'images/category_plain.png'}" alt="${p.name}" />
         </div>
         <div class="hc-info p-20">
-          <div class="hc-cat text-xs text-muted font-semibold uppercase tracking-wider mb-4">${p.category_name || 'SYSTEM'}</div>
+          <div class="hc-cat text-xs text-muted font-semibold uppercase tracking-wider mb-4">${p.category_name || 'PRODUCT'}</div>
           <h3 class="text-sm font-bold text-dark mb-8">${p.name}</h3>
           <div class="hc-footer flex-between items-center mt-16 pt-16 border-top">
-            <div class="hc-price font-bold text-blue">£${parseFloat(p.price_from).toFixed(2)} <span class="text-xs text-muted font-normal">/ node</span></div>
-            <a href="/product/${p.id}" class="hc-btn text-xs font-semibold text-blue hover-underline">Customize <i class="fas fa-arrow-right text-xs ml-4"></i></a>
+            <div class="hc-price font-bold text-blue">£${parseFloat(p.price_from).toFixed(2)} <span class="text-xs text-muted font-normal">/ item</span></div>
+            <a href="/product/${p.slug}" class="hc-btn text-xs font-semibold text-blue hover-underline">Customize <i class="fas fa-arrow-right text-xs ml-4"></i></a>
           </div>
         </div>
       </div>

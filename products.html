@@ -141,8 +141,8 @@
 <!-- Minimal Glass Navigation -->
 <nav class="saas-nav bg-white border-bottom shadow-sm" id="mainNav" style="padding: 12px 0;">
   <div class="nav-container">
-    <a href="/" class="nav-logo" aria-label="GOTEK Home">
-      <img src="images/gotek_logo.png" alt="GOTEK Logo" />
+    <a href="/" class="nav-logo" aria-label="ID Card Platform Home">
+      <img src="images/gotek_logo.png" alt="ID Card Platform Logo" />
     </a>
     <ul class="nav-links">
       <li><a href="/">Home</a></li>
@@ -311,16 +311,16 @@
           ${imgHtml}
         </div>
         <div class="hc-info p-20 flex" style="flex-direction:column; flex:1;">
-          <div class="hc-cat text-xs text-muted font-semibold uppercase tracking-wider mb-4">${p.category_name || 'SYSTEM'}</div>
+          <div class="hc-cat text-xs text-muted font-semibold uppercase tracking-wider mb-4">${p.category_name || 'PRODUCT'}</div>
           <h3 class="text-sm font-bold text-dark mb-8" style="flex:1;">${p.name}</h3>
           
           <div class="hc-footer mt-16 pt-16 border-top">
-            <div class="hc-price font-bold text-blue mb-16">£${parseFloat(p.price_from).toFixed(2)} <span class="text-xs text-muted font-normal">/ node</span></div>
+            <div class="hc-price font-bold text-blue mb-16">£${parseFloat(p.price_from).toFixed(2)} <span class="text-xs text-muted font-normal">/ item</span></div>
             <div style="display:flex; gap:8px;">
               <a href="/product/${p.slug}" class="btn-secondary-saas" style="flex:1; padding:8px; font-size:12px;">Inspect</a>
               <button onclick="addToCart(${p.id},'${p.name.replace(/'/g,"\\'")}');return false;"
                 class="btn-primary-saas" style="flex:1; padding:8px; font-size:12px;">
-                <i class="fas fa-plus mr-4"></i> Queue
+                <i class="fas fa-plus mr-4"></i> Basket
               </button>
             </div>
           </div>
@@ -335,9 +335,9 @@
     const url = slug ? `/products?category=${slug}` : '/products';
     window.history.pushState({}, '', url);
     // Update breadcrumb + title
-    document.getElementById('breadcrumbCat').textContent = name || 'Hardware Fleet';
-    document.getElementById('pageTitle').textContent = name || 'Hardware Fleet';
-    document.title = (name || 'Fleet') + ' – GOTEK';
+    document.getElementById('breadcrumbCat').textContent = name || 'Product Catalog';
+    document.getElementById('pageTitle').textContent = name || 'Product Catalog';
+    document.title = (name || 'Catalog') + ' – ID Card Platform';
     // Update sidebar active state
     document.querySelectorAll('.filter-cat').forEach(el => {
       el.classList.toggle('active', el.dataset.slug === (slug || ''));

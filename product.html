@@ -90,8 +90,8 @@
   <!-- Minimal Glass Navigation -->
   <nav class="saas-nav bg-white border-bottom shadow-sm" id="mainNav" style="padding: 12px 0;">
     <div class="nav-container">
-      <a href="/" class="nav-logo" aria-label="GOTEK Home">
-        <img src="/images/gotek_logo.png" alt="GOTEK Logo" />
+      <a href="/" class="nav-logo" aria-label="ID Card Platform Home">
+        <img src="/images/gotek_logo.png" alt="ID Card Platform Logo" />
       </a>
       <ul class="nav-links">
         <li><a href="/">Home</a></li>
@@ -299,7 +299,7 @@
           </div>
           <button class="btn-primary-saas add-to-cart-btn" onclick="addToCart()" id="addBtn"><i class="fas fa-shopping-cart mr-8"></i> Add to Basket</button>
         </div>
-        <p style="text-align:right;font-size:12px;color:var(--text-muted);margin-top:12px;font-weight:500;">Minimum node requirement: 50</p>
+        <p style="text-align:right;font-size:12px;color:var(--text-muted);margin-top:12px;font-weight:500;">Minimum order requirement: 50</p>
       </div>
     `;
     
@@ -309,7 +309,7 @@
   async function addToCart() {
     const btn = document.getElementById('addBtn');
     btn.disabled = true;
-    btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-8"></i> QUEUING...';
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-8"></i> ADDING...';
 
     const customisationStr = `Width: ${config.width}, Base: ${colors.find(c=>c.hex===config.color)?.name||'Custom'}, Clip: ${config.clip}, Break: ${config.safetyBreak}${config.text ? `, Text: ${config.text}` : ''}${config.file ? `, Logo: Yes` : ''}`;
 
@@ -323,7 +323,7 @@
         })
       });
       if (res.ok) {
-        showToast('Node array added to queue.', 'success');
+        showToast('Item added to basket.', 'success');
         
         // Pulse cart visually
         const countEl = document.getElementById('headerCartCount');
@@ -337,14 +337,14 @@
         setTimeout(() => window.location.href = '/cart', 1000);
       } else {
         const d = await res.json();
-        showToast(d.error || 'Failed to queue module', 'error');
+        showToast(d.error || 'Failed to add item', 'error');
         btn.disabled = false;
-        btn.innerHTML = '<i class="fas fa-database mr-8"></i> Add to Deployment Queue';
+        btn.innerHTML = '<i class="fas fa-shopping-cart mr-8"></i> Add to Basket';
       }
     } catch(e) {
       showToast('Network disconnect error', 'error');
       btn.disabled = false;
-      btn.innerHTML = '<i class="fas fa-database mr-8"></i> Add to Deployment Queue';
+      btn.innerHTML = '<i class="fas fa-shopping-cart mr-8"></i> Add to Basket';
     }
   }
 
@@ -367,11 +367,11 @@
       product = await res.json();
       basePrice = parseFloat(product.price_from) || 0;
       
-      document.title = product.name + ' – Deploy | GOTEK';
+      document.title = product.name + ' – Customise | ID Card Platform';
       document.getElementById('bcName').textContent = product.name;
       renderUI();
     } catch(e) {
-      document.getElementById('productRoot').innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:100px 0;"><h2 class="text-dark font-bold text-2xl mb-16">Hardware Module Not Found</h2><a href="/products" class="btn-secondary-saas">Return to Fleet</a></div>';
+      document.getElementById('productRoot').innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:100px 0;"><h2 class="text-dark font-bold text-2xl mb-16">Product Not Found</h2><a href="/products" class="btn-secondary-saas">Return to Catalog</a></div>';
     }
   }
 
