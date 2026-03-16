@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Request Clearance – GOTEK</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { background: #f8fafc; }
+    .auth-page { min-height: calc(100vh - 80px); display: flex; align-items: center; justify-content: center; padding: 60px 20px; position: relative; z-index: 2; }
+    
+    .auth-box { 
+      background: #ffffff; 
+      border: 1px solid var(--border-light); 
+      border-radius: 16px; 
+      padding: 48px 40px; 
+      width: 100%; 
+      max-width: 480px; 
+      box-shadow: var(--shadow-lg); 
+    }
+    .auth-box h1 { font-size: 28px; font-weight: 800; color: var(--text-main); margin-bottom: 8px; letter-spacing: -0.5px; }
+    .auth-box .sub { color: var(--text-muted); font-size: 14px; margin-bottom: 32px; line-height: 1.5; }
+    
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+    .form-group input { 
+      width: 100%; padding: 14px; border: 1px solid var(--border-light); border-radius: 8px; font-size: 14px; font-family: 'Inter', sans-serif; 
+      color: var(--text-main); outline: none; transition: border-color 0.2s, box-shadow 0.2s; background: #ffffff; box-shadow: var(--shadow-sm);
+    }
+    .form-group input:focus { border-color: var(--primary-blue); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
+    
+    .btn-full { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 14px; background: var(--primary-blue); color: #fff; font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; border: none; border-radius: 8px; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2); }
+    .btn-full:hover { background: var(--primary-blue-hover); transform: translateY(-1px); box-shadow: 0 6px 12px rgba(37, 99, 235, 0.3); }
+    
+    .auth-link { text-align: center; margin-top: 24px; font-size: 14px; color: var(--text-muted); }
+    .auth-link a { color: var(--primary-blue); font-weight: 600; text-decoration: none; }
+    .auth-link a:hover { text-decoration: underline; }
+    
+    .error-msg { background: rgba(239, 68, 68, 0.05); color: var(--accent-red); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 8px; padding: 14px 16px; font-size: 14px; font-weight: 500; margin-bottom: 20px; display: none; }
+    .success-msg { background: #dcfce7; color: var(--accent-green); border: 1px solid #bbf7d0; border-radius: 8px; padding: 14px 16px; font-size: 14px; font-weight: 500; margin-bottom: 20px; display: none; }
+  </style>
+</head>
+<body class="light-saas-theme">
+
+<!-- Ambient Background -->
+<div style="position:fixed; top:-200px; left:-200px; width:700px; height:700px; background:rgba(37, 99, 235, 0.03); filter:blur(150px); border-radius:50%; z-index:0; pointer-events: none;"></div>
+<div style="position:fixed; bottom:-200px; right:-200px; width:600px; height:600px; background:rgba(37, 99, 235, 0.02); filter:blur(150px); border-radius:50%; z-index:0; pointer-events: none;"></div>
+
+<!-- Minimal Navigation -->
+<nav class="saas-nav bg-white border-bottom shadow-sm" style="padding: 16px 0;">
+  <div class="nav-container" style="justify-content: center;">
+    <a href="/" class="nav-logo" aria-label="GOTEK Home">
+      <img src="/images/gotek_logo.png" alt="GOTEK Logo" style="height: 32px;" />
+    </a>
+  </div>
+</nav>
+
+<section class="auth-page">
+  <div class="auth-box">
+    <h1><i class="fas fa-user-plus text-blue mr-8"></i> Request Clearance</h1>
+    <p class="sub">Register to securely provision GOTEK hardware nodes.</p>
+    
+    <div class="error-msg" id="errorMsg"></div>
+    <div class="success-msg" id="successMsg"></div>
+    
+    <form id="registerForm">
+      <div class="form-group">
+        <label for="name">Lead Architect <span class="text-muted" style="text-transform:none; font-weight:400;">(Full Name)</span></label>
+        <div style="position: relative;">
+          <i class="fas fa-id-card text-muted" style="position: absolute; left: 14px; top: 16px;"></i>
+          <input type="text" id="name" name="name" placeholder="John Smith" required style="padding-left: 40px;" />
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="email">Secure Email Vector</label>
+        <div style="position: relative;">
+          <i class="fas fa-envelope text-muted" style="position: absolute; left: 14px; top: 16px;"></i>
+          <input type="email" id="email" name="email" placeholder="architect@gotek.tech" required style="padding-left: 40px;" />
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="password">Authentication Key <span class="text-muted" style="text-transform:none; font-weight:400;">(min 6 char)</span></label>
+        <div style="position: relative;">
+          <i class="fas fa-key text-muted" style="position: absolute; left: 14px; top: 16px;"></i>
+          <input type="password" id="password" name="password" placeholder="••••••••" required minlength="6" style="padding-left: 40px;" />
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="confirm">Verify Key</label>
+        <div style="position: relative;">
+          <i class="fas fa-check-double text-muted" style="position: absolute; left: 14px; top: 16px;"></i>
+          <input type="password" id="confirm" name="confirm" placeholder="••••••••" required style="padding-left: 40px;" />
+        </div>
+      </div>
+      
+      <button type="submit" class="btn-full" style="margin-top: 28px;">
+        <i class="fas fa-satellite-dish mr-8"></i> GENERATE IDENTITY
+      </button>
+    </form>
+    
+    <p class="auth-link">Clearance established? <a href="/login">Establish Connection</a></p>
+  </div>
+</section>
+
+<script>
+document.getElementById('registerForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const errorEl = document.getElementById('errorMsg');
+  const successEl = document.getElementById('successMsg');
+  errorEl.style.display = 'none'; successEl.style.display = 'none';
+  
+  const pass = document.getElementById('password').value;
+  const confirm = document.getElementById('confirm').value;
+  
+  if (pass !== confirm) { 
+    errorEl.innerHTML = '<i class="fas fa-exclamation-triangle mr-8"></i> Verification keys do not match.'; 
+    errorEl.style.display = 'block'; 
+    return; 
+  }
+  
+  const btn = this.querySelector('button');
+  const originalText = btn.innerHTML;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-8"></i> GENERATING IDENTITY...'; 
+  btn.disabled = true;
+  
+  try {
+    const res = await fetch('/api/auth/register', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ name: document.getElementById('name').value, email: document.getElementById('email').value, password: pass })
+    });
+    const data = await res.json();
+    if (res.ok) {
+      successEl.innerHTML = `<i class="fas fa-check-circle mr-8"></i> Clearances granted. Welcome, ${data.user.name}. Redirecting...`;
+      successEl.style.display = 'block';
+      setTimeout(() => window.location.href = '/', 1500);
+    } else {
+      errorEl.innerHTML = `<i class="fas fa-exclamation-triangle mr-8"></i> ${data.error}`; 
+      errorEl.style.display = 'block';
+      btn.innerHTML = originalText; btn.disabled = false;
+    }
+  } catch(err) {
+    errorEl.innerHTML = '<i class="fas fa-exclamation-triangle mr-8"></i> Network partition detected.'; 
+    errorEl.style.display = 'block';
+    btn.innerHTML = originalText; btn.disabled = false;
+  }
+});
+</script>
+</body>
+</html>

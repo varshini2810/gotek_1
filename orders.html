@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mission Logs – GOTEK</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { background: #f8fafc; }
+    .orders-page { padding: 80px 0; min-height: calc(100vh - 80px); position: relative; z-index: 2; }
+    .orders-page h1 { font-size: 32px; font-weight: 800; color: var(--text-main); margin-bottom: 30px; letter-spacing: -1px; }
+    
+    .orders-card {
+      background: #ffffff;
+      border: 1px solid var(--border-light);
+      border-radius: 12px;
+      padding: 0;
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+    }
+    
+    .orders-table { width: 100%; border-collapse: separate; border-spacing: 0; }
+    .orders-table th { 
+      text-align: left; padding: 16px 24px; background: var(--bg-surface-hover); border-bottom: 1px solid var(--border-light); 
+      font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.5px;
+    }
+    .orders-table td { padding: 20px 24px; border-bottom: 1px solid var(--border-light); font-size: 14px; vertical-align: middle; color: var(--text-main); }
+    .orders-table tr:last-child td { border-bottom: none; }
+    .orders-table tr:hover td { background: var(--bg-surface-hover); }
+    
+    .status-badge { display: inline-flex; align-items: center; justify-content: center; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+    .status-Pending { background: #fef3c7; color: #d97706; }
+    .status-Processing { background: var(--primary-blue-light); color: var(--primary-blue); }
+    .status-Dispatched { background: #f3e8ff; color: var(--accent-purple); }
+    .status-Delivered { background: #dcfce7; color: var(--accent-green); }
+    .status-Cancelled { background: #fee2e2; color: var(--accent-red); }
+    
+    .not-logged { text-align: center; padding: 80px 20px; background: #ffffff; border-radius: 12px; border: 1px dashed var(--border-focus); box-shadow: var(--shadow-sm); }
+    .not-logged i { font-size: 60px; color: var(--text-light); margin-bottom: 24px; display: block; }
+    .not-logged h2 { font-size: 24px; font-weight: 800; color: var(--text-main); margin-bottom: 12px; }
+    .not-logged p { color: var(--text-muted); margin-bottom: 30px; }
+  </style>
+</head>
+<body class="light-saas-theme">
+
+<!-- Ambient Background -->
+<div style="position:fixed; top:-200px; left:-200px; width:700px; height:700px; background:rgba(37, 99, 235, 0.03); filter:blur(150px); border-radius:50%; z-index:0; pointer-events: none;"></div>
+<div style="position:fixed; bottom:-200px; right:-200px; width:600px; height:600px; background:rgba(37, 99, 235, 0.02); filter:blur(150px); border-radius:50%; z-index:0; pointer-events: none;"></div>
+
+<!-- Minimal Glass Navigation -->
+<nav class="saas-nav bg-white border-bottom shadow-sm" id="mainNav" style="padding: 12px 0;">
+  <div class="nav-container">
+    <a href="/" class="nav-logo" aria-label="GOTEK Home">
+      <img src="/images/gotek_logo.png" alt="GOTEK Logo" />
+    </a>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/products">Categories</a></li>
+      <li><a href="/contact">Contact</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="/login" class="nav-link-subtle" id="authLink">Sign In</a>
+      <a href="/cart" class="nav-cart" id="cartHeaderLink">
+        <i class="fas fa-shopping-cart"></i>
+        <span class="cart-pulse" id="headerCartCount" style="box-shadow: 0 0 0 2px #fff;">0</span>
+      </a>
+      <a href="/products" class="btn-primary-saas btn-sm">Get Started</a>
+      <button class="mobile-menu-btn" id="mobileToggle" aria-label="Menu">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile Menu Dropdown -->
+<div class="mobile-menu" id="mobileMenu">
+  <ul>
+    <li><a href="/">Home</a></li>
+    <li><a href="/products">Categories</a></li>
+    <li><a href="/contact">Contact</a></li>
+    <li style="margin-top:20px;"><a href="/login" class="btn-secondary-saas" style="width:100%; text-align:center;">Sign In</a></li>
+  </ul>
+</div>
+
+<section class="orders-page">
+  <div class="container">
+    
+    <!-- Breadcrumb -->
+    <div style="margin-bottom: 24px;">
+      <span style="color:var(--text-muted);font-size:13px;font-weight:500;">
+        <a href="/" style="color:var(--primary-blue);text-decoration:none;">Dashboard</a> <i class="fas fa-chevron-right" style="font-size:10px;margin:0 8px;color:var(--text-light)"></i> <span style="color:var(--text-main);">Order History</span>
+      </span>
+    </div>
+
+    <h1><i class="fas fa-history text-blue" style="margin-right:12px;"></i> Past Orders</h1>
+    <div id="ordersContent"></div>
+  </div>
+</section>
+
+<!-- Minimal Footer -->
+<footer class="saas-footer bg-white border-top mt-40 pt-20 pb-20 text-center" style="position:relative; z-index:10;">
+  <div class="container flex-between">
+    <p class="text-muted text-xs">&copy; <script>document.write(new Date().getFullYear())</script> ID Card Platform. All rights reserved.</p>
+    <div class="badges text-muted">
+      <i class="fab fa-cc-visa mx-2"></i>
+      <i class="fab fa-cc-mastercard mx-2"></i>
+      <i class="fab fa-cc-amex mx-2"></i>
+    </div>
+  </div>
+</footer>
+
+<script>
+async function initHeader() {
+  try {
+    const res = await fetch('/api/cart');
+    const data = await res.json();
+    const countEl = document.getElementById('headerCartCount');
+    if(countEl) countEl.textContent = data.count || 0;
+
+    const me = await fetch('/api/auth/me').then(r => r.json());
+    const authLink = document.getElementById('authLink');
+    if (me.user && authLink) {
+      authLink.innerHTML = '<i class="fas fa-user-circle"></i> ' + me.user.name.split(' ')[0];
+      authLink.href = me.user.isAdmin ? '/admin' : '/orders';
+      authLink.classList.add('btn-secondary-saas', 'btn-sm');
+      authLink.classList.remove('nav-link-subtle');
+    }
+  } catch(e) {}
+}
+
+async function loadOrders() {
+  const me = await (await fetch('/api/auth/me')).json();
+  const el = document.getElementById('ordersContent');
+
+  if (!me.user) {
+    el.innerHTML = `
+      <div class="not-logged">
+        <i class="fas fa-user-lock"></i>
+        <h2>Login Required</h2>
+        <p>Please log in to your account to view your order history.</p>
+        <div style="display:flex; gap:16px; justify-content:center;">
+          <a href="/login" class="btn-primary-saas"><i class="fas fa-sign-in-alt mr-8"></i> SIGN IN</a>
+          <a href="/register" class="btn-secondary-saas"><i class="fas fa-user-plus mr-8"></i> CREATE ACCOUNT</a>
+        </div>
+      </div>`;
+    return;
+  }
+
+  const res = await fetch('/api/orders');
+  const orders = await res.json();
+
+  if (!orders.length) {
+    el.innerHTML = `
+      <div class="not-logged">
+        <i class="fas fa-box-open"></i>
+        <h2>No Active Deployments</h2>
+        <p>Your hardware provision ledger is currently clear.</p>
+        <a href="/products" class="btn-primary-saas"><i class="fas fa-microchip mr-8"></i> INITIALIZE HARDWARE</a>
+      </div>`;
+    return;
+  }
+
+  const rows = orders.map(o => `
+    <tr>
+      <td style="font-weight:700;color:var(--primary-blue);font-family:monospace;">${o.order_ref}</td>
+      <td style="color:var(--text-muted);">${new Date(o.created_at).toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'})}</td>
+      <td style="font-weight:600;">${o.first_name} ${o.last_name}</td>
+      <td style="font-weight:700;color:var(--text-main);">£${parseFloat(o.total).toFixed(2)}</td>
+      <td><span class="status-badge status-${o.status}">${o.status}</span></td>
+    </tr>`).join('');
+
+  el.innerHTML = `
+    <div class="orders-card">
+      <table class="orders-table">
+        <thead><tr><th>Operation Ref</th><th>Timestamp</th><th>Principal</th><th>Valuation</th><th>Phase</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
+}
+
+// Mobile menu toggle
+document.getElementById('mobileToggle').addEventListener('click', function() {
+  const menu = document.getElementById('mobileMenu');
+  const icon = this.querySelector('i');
+  if(menu.style.display === 'block') {
+    menu.style.display = 'none';
+    icon.classList.remove('fa-times');
+    icon.classList.add('fa-bars');
+  } else {
+    menu.style.display = 'block';
+    icon.classList.remove('fa-bars');
+    icon.classList.add('fa-times');
+  }
+});
+
+initHeader();
+loadOrders();
+</script>
+</body>
+</html>

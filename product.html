@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Deploy Module – GOTEK</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* Scope specific overrides for product page SaaS theme */
+    .product-page { padding: 120px 0 80px; min-height: 100vh; position: relative; z-index: 2; }
+    .product-layout { display: grid; grid-template-columns: 1fr 520px; gap: 40px; align-items: start; }
+    
+    /* Left: Image Gallery */
+    .product-gallery { 
+      position: sticky; top: 100px; 
+      background: #ffffff; 
+      border: 1px solid var(--border-light); 
+      border-radius: 16px; 
+      padding: 32px; 
+      text-align: center; 
+      box-shadow: var(--shadow-sm);
+    }
+    .main-image { width: 100%; height: 400px; object-fit: contain; margin-bottom: 24px; transition: opacity 0.3s; }
+    .thumb-grid { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .thumb { width: 70px; height: 70px; border: 2px solid var(--border-light); border-radius: 8px; cursor: pointer; object-fit: cover; opacity: 0.6; transition: all 0.2s; }
+    .thumb.active, .thumb:hover { border-color: var(--primary-blue); opacity: 1; }
+    
+    /* Right: Configurator */
+    .config-panel { 
+      background: #ffffff; 
+      border: 1px solid var(--border-light); 
+      border-radius: 16px; 
+      padding: 40px; 
+      box-shadow: var(--shadow-sm);
+    }
+    .product-title { font-size: 32px; font-weight: 800; color: var(--text-main); margin-bottom: 12px; letter-spacing: -1px; }
+    .product-desc { font-size: 16px; color: var(--text-muted); margin-bottom: 24px; line-height: 1.6; }
+    .price-display { font-size: 36px; color: var(--primary-blue); font-weight: 800; margin-bottom: 32px; padding-bottom: 24px; border-bottom: 1px solid var(--border-light); }
+    .price-display span { font-size: 14px; color: var(--text-muted); font-weight: 500; }
+    
+    /* Config Steps */
+    .config-step { margin-bottom: 32px; }
+    .config-title { font-size: 14px; font-weight: 700; color: var(--text-main); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; }
+    .selection-text { color: var(--primary-blue); font-weight: 600; font-size: 13px; text-transform: none; }
+    
+    /* Option selectors */
+    .options-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .option-btn { border: 1px solid var(--border-light); background: #ffffff; padding: 14px 10px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 500; text-align: center; color: var(--text-muted); transition: all 0.2s; box-shadow: var(--shadow-sm); }
+    .option-btn:hover { border-color: var(--border-focus); background: var(--bg-surface-alt); color: var(--text-main); }
+    .option-btn.selected { border-width: 2px; border-color: var(--primary-blue); background: var(--primary-blue-light); color: var(--primary-blue); font-weight: 600; box-shadow: 0 0 0 1px rgba(59,130,246,0.1); }
+    
+    /* Colors */
+    .color-grid { display: flex; gap: 12px; flex-wrap: wrap; }
+    .color-swatch { width: 42px; height: 42px; border-radius: 50%; border: 2px solid var(--border-light); cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; box-shadow: var(--shadow-sm); }
+    .color-swatch:hover { transform: scale(1.1); }
+    .color-swatch.selected { border-color: var(--primary-blue); transform: scale(1.1); box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--primary-blue); }
+    
+    /* Upload / Text */
+    .custom-input { width: 100%; padding: 16px; border: 1px solid var(--border-light); border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 14px; margin-bottom: 12px; outline: none; transition: all 0.2s; background: #ffffff; color: var(--text-main); box-shadow: var(--shadow-sm); }
+    .custom-input:focus { border-color: var(--primary-blue); box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
+    .upload-area { border: 2px dashed var(--border-focus); padding: 32px; text-align: center; border-radius: 8px; background: var(--bg-surface-alt); cursor: pointer; transition: all 0.2s; display: block; }
+    .upload-area:hover { border-color: var(--primary-blue); background: var(--primary-blue-light); }
+    .upload-area i { font-size: 32px; margin-bottom: 12px; color: var(--text-muted); transition: color 0.2s; }
+    .upload-area:hover i { color: var(--primary-blue); }
+    
+    /* Action Bar */
+    .action-bar { background: var(--bg-surface-alt); padding: 24px; border-radius: 12px; margin-top: 40px; display: flex; gap: 16px; align-items: center; border: 1px solid var(--border-light); }
+    .qty-wrap { display: flex; align-items: center; background: #ffffff; border: 1px solid var(--border-light); border-radius: 8px; overflow: hidden; height: 54px; box-shadow: var(--shadow-sm); }
+    .qty-btn { background: transparent; border: none; width: 44px; font-size: 20px; cursor: pointer; color: var(--text-muted); transition: all 0.2s; }
+    .qty-btn:hover { background: var(--bg-surface-alt); color: var(--text-main); }
+    .qty-input { width: 64px; border: none; text-align: center; font-size: 16px; font-weight: 700; outline: none; color: var(--text-main); background: transparent; }
+    
+    .add-to-cart-btn { flex: 1; height: 54px; font-size: 15px; justify-content: center; border-radius: 8px; }
+    
+    /* Loading Skeleton */
+    .skel-text { height: 24px; background: var(--border-light); border-radius: 6px; margin-bottom: 12px; animation: pulse 1.5s infinite; }
+    @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
+
+    @media (max-width: 900px) { .product-layout { grid-template-columns: 1fr; } .product-gallery { position: static; } }
+  </style>
+</head>
+<body class="light-saas-theme">
+
+  <!-- Ambient Light Backgrounds -->
+  <div style="position:fixed; top:-200px; left:-200px; width:700px; height:700px; background:rgba(59,130,246,0.03); filter:blur(150px); border-radius:50%; z-index:0;"></div>
+  <div style="position:fixed; bottom:-200px; right:-200px; width:600px; height:600px; background:rgba(59,130,246,0.02); filter:blur(150px); border-radius:50%; z-index:0;"></div>
+
+  <!-- Minimal Glass Navigation -->
+  <nav class="saas-nav bg-white border-bottom shadow-sm" id="mainNav" style="padding: 12px 0;">
+    <div class="nav-container">
+      <a href="/" class="nav-logo" aria-label="GOTEK Home">
+        <img src="/images/gotek_logo.png" alt="GOTEK Logo" />
+      </a>
+      <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/products" class="active">Categories</a></li>
+        <li><a href="/contact">Contact</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="/login" class="nav-link-subtle" id="authLink">Sign In</a>
+        <a href="/cart" class="nav-cart" id="cartHeaderLink">
+          <i class="fas fa-shopping-cart"></i>
+          <span class="cart-pulse" id="headerCartCount">0</span>
+        </a>
+        <a href="/products" class="btn-primary-saas btn-sm">Get Started</a>
+        <button class="mobile-menu-btn" id="mobileToggle" aria-label="Menu">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu Dropdown -->
+  <div class="mobile-menu" id="mobileMenu">
+    <ul>
+      <li><a href="/">Home</a></li>
+      <li><a href="/products">Categories</a></li>
+      <li><a href="/contact">Contact</a></li>
+      <li style="margin-top:20px;"><a href="/login" class="btn-secondary-saas" style="width:100%; text-align:center;">Sign In</a></li>
+    </ul>
+  </div>
+
+  <section class="product-page">
+    <div class="container" style="position: relative; z-index: 5;">
+
+      <!-- Breadcrumb -->
+      <div style="margin-bottom: 24px;">
+        <span style="color:var(--text-muted);font-size:13px;font-weight:500;">
+          <a href="/" style="color:var(--primary-blue);text-decoration:none;">Dashboard</a> <i class="fas fa-chevron-right" style="font-size:10px;margin:0 8px;color:var(--text-light)"></i> <a href="/products" style="color:var(--primary-blue);text-decoration:none;">Catalog</a> <i class="fas fa-chevron-right" style="font-size:10px;margin:0 8px;color:var(--text-light)"></i> <span id="bcName" style="color:var(--text-main);">Customise Product</span>
+        </span>
+      </div>
+
+      <div class="product-layout" id="productRoot">
+        <!-- Skeleton Loaders -->
+        <div class="product-gallery" style="height:500px;animation: pulse 1.5s infinite;"></div>
+        <div class="config-panel">
+          <div class="skel-text" style="width: 70%; height: 40px; margin-bottom: 16px;"></div>
+          <div class="skel-text" style="width: 40%; height: 48px; margin-bottom: 30px;"></div>
+          <div class="skel-text"></div>
+          <div class="skel-text" style="width: 80%"></div>
+          <div class="skel-text" style="width: 60%"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Minimal Footer -->
+  <footer class="saas-footer bg-white border-top mt-40 pt-20 pb-20 text-center" style="position:relative; z-index:10;">
+    <div class="container flex-between">
+      <p class="text-muted text-xs">&copy; <script>document.write(new Date().getFullYear())</script> ID Card Platform. All rights reserved.</p>
+      <div class="badges text-muted">
+        <i class="fab fa-cc-visa mx-2"></i>
+        <i class="fab fa-cc-mastercard mx-2"></i>
+        <i class="fab fa-cc-amex mx-2"></i>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast -->
+  <div id="toast" style="position:fixed;bottom:30px;right:30px;background:#ffffff;border:1px solid var(--border-light);color:var(--text-main);padding:16px 24px;border-radius:8px;font-size:14px;font-weight:600;z-index:9999;transform:translateX(200%);transition:transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);box-shadow:var(--shadow-lg);"></div>
+
+<script>
+  let product = null;
+  const config = { width: '15mm', color: '#1a1a1a', clip: 'Trigger Clip', safetyBreak: 'Yes', text: '', file: null, qty: 100 };
+  const colors = [
+    { name: 'Obsidian', hex: '#1a1a1a' }, { name: 'Titanium', hex: '#ffffff' }, { name: 'Alert Red', hex: '#ef4444' },
+    { name: 'Navy', hex: '#1e3a8a' }, { name: 'Cyber Blue', hex: '#3b82f6' }, { name: 'Secure Green', hex: '#10b981' },
+    { name: 'Warning Yellow', hex: '#eab308' }, { name: 'Signal Orange', hex: '#f97316' }, { name: 'Deep Purple', hex: '#8b5cf6' }
+  ];
+  let basePrice = 0;
+
+  function setConfig(key, val) {
+    config[key] = val;
+    renderUI();
+  }
+
+  function handleFile(e) {
+    const file = e.target.files[0];
+    if (file) {
+      config.file = file.name;
+      document.getElementById('fileLabel').innerHTML = `<i class="fas fa-check-circle text-green" style="margin-bottom:12px;"></i><br/><span class="text-main font-semibold">${file.name} ready</span>`;
+      renderUI();
+    }
+  }
+
+  function updateQty(delta) {
+    const newQty = parseInt(document.getElementById('qtyInput').value) + delta;
+    if (newQty >= 50) { // Min 50 for custom orders
+      config.qty = newQty;
+      renderUI();
+    }
+  }
+
+  function calculatePrice() {
+    let unitPrice = basePrice;
+    if (config.qty >= 250) unitPrice *= 0.85;
+    else if (config.qty >= 100) unitPrice *= 0.95;
+    
+    if (config.width === '20mm') unitPrice += 0.05;
+    if (config.width === '25mm') unitPrice += 0.10;
+    if (config.clip === 'Lobster Clip') unitPrice += 0.08;
+    if (config.safetyBreak === 'Double Break') unitPrice += 0.15;
+    
+    return unitPrice;
+  }
+
+  function renderUI() {
+    if (!product) return;
+    
+    const unitPrice = calculatePrice();
+    const totalPrice = unitPrice * config.qty;
+    
+    const colorName = colors.find(c => c.hex === config.color)?.name || 'Custom';
+    
+    const html = `
+      <!-- Gallery -->
+      <div class="product-gallery">
+        <div style="position:relative;">
+          <img src="${product.image}" id="mainImg" class="main-image" onerror="this.src='/images/category_plain.png'" />
+          <div style="position:absolute;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,0.9);padding:6px 16px;border-radius:20px;font-size:11px;font-weight:700;color:${config.color === '#ffffff' ? '#64748b' : config.color};border:1px solid var(--border-light);box-shadow:var(--shadow-sm);">
+            Product Preview
+          </div>
+        </div>
+        <div class="thumb-grid">
+          <img src="${product.image}" class="thumb active" onerror="this.src='/images/category_plain.png'" />
+          <img src="/images/category_printed.png" class="thumb" onclick="document.getElementById('mainImg').src=this.src" />
+        </div>
+      </div>
+
+      <!-- Config -->
+      <div class="config-panel">
+        ${product.badge ? `<span class="bg-blue-100 text-blue font-bold px-12 py-4 rounded-full text-xs uppercase mb-16 inline-block">${product.badge}</span>` : ''}
+        <h1 class="product-title">${product.name}</h1>
+        <p class="product-desc">${product.description || 'Customise your product with the options below.'}</p>
+        
+        <div class="price-display">
+          £${unitPrice.toFixed(2)} <span>/ item (ex VAT)</span>
+          <br><span style="font-size:18px;color:var(--text-main);font-weight:700;">Order Total: £${totalPrice.toFixed(2)}</span>
+        </div>
+
+        <!-- 1. Width -->
+        <div class="config-step">
+          <div class="config-title">1. Card Size <span class="selection-text">${config.width}</span></div>
+          <div class="options-grid">
+            <div class="option-btn ${config.width==='10mm'?'selected':''}" onclick="setConfig('width','10mm')">10mm (Low)</div>
+            <div class="option-btn ${config.width==='15mm'?'selected':''}" onclick="setConfig('width','15mm')">15mm (Std)</div>
+            <div class="option-btn ${config.width==='20mm'?'selected':''}" onclick="setConfig('width','20mm')">20mm (+£0.05)</div>
+            <div class="option-btn ${config.width==='25mm'?'selected':''}" onclick="setConfig('width','25mm')">25mm (+£0.10)</div>
+          </div>
+        </div>
+
+        <!-- 2. Colour -->
+        <div class="config-step">
+          <div class="config-title">2. Card Colour <span class="selection-text">${colorName}</span></div>
+          <div class="color-grid">
+            ${colors.map(c => `<div class="color-swatch ${config.color===c.hex?'selected':''}" style="background-color:${c.hex};" title="${c.name}" onclick="setConfig('color','${c.hex}')"></div>`).join('')}
+          </div>
+        </div>
+
+        <!-- 3. Clip -->
+        <div class="config-step">
+          <div class="config-title">3. Attachment Type <span class="selection-text">${config.clip}</span></div>
+          <div class="options-grid">
+            <div class="option-btn ${config.clip==='Trigger Clip'?'selected':''}" onclick="setConfig('clip','Trigger Clip')"><i class="fas fa-paperclip"></i> Trigger Type</div>
+            <div class="option-btn ${config.clip==='Dog Clip'?'selected':''}" onclick="setConfig('clip','Dog Clip')"><i class="fas fa-link"></i> Anchor Type</div>
+            <div class="option-btn ${config.clip==='Lobster Clip'?'selected':''}" onclick="setConfig('clip','Lobster Clip')"><i class="fas fa-microchip"></i> Lobster (+£0.08)</div>
+          </div>
+        </div>
+
+        <!-- 4. Safety Break -->
+        <div class="config-step">
+          <div class="config-title">4. Safety Break <span class="selection-text">${config.safetyBreak}</span></div>
+          <div class="options-grid">
+            <div class="option-btn ${config.safetyBreak==='Yes'?'selected':''}" onclick="setConfig('safetyBreak','Yes')">Standard</div>
+            <div class="option-btn ${config.safetyBreak==='Double Break'?'selected':''}" onclick="setConfig('safetyBreak','Double Break')">Redundant (+£0.15)</div>
+            <div class="option-btn ${config.safetyBreak==='No'?'selected':''}" onclick="setConfig('safetyBreak','No')">None</div>
+          </div>
+        </div>
+
+        <!-- 5. Branding -->
+        <div class="config-step">
+          <div class="config-title">5. Custom Branding</div>
+          <input type="text" class="custom-input" placeholder="Enter custom text for your cards (optional)..." value="${config.text}" onchange="setConfig('text', this.value)" />
+          <label class="upload-area" id="fileLabel">
+            <i class="fas fa-cloud-upload-alt"></i><br/>
+            ${config.file ? `<span style="color:var(--accent-green);font-weight:600;">Artwork: ${config.file} ready</span>` : '<span style="color:var(--text-muted);">Upload your logo/artwork (PNG, JPG, PDF)</span>'}
+            <input type="file" style="display:none;" onchange="handleFile(event)" accept="image/*,.pdf" />
+          </label>
+        </div>
+
+        <!-- Action Bar -->
+        <div class="action-bar">
+          <div class="qty-wrap">
+            <button class="qty-btn" onclick="updateQty(-50)">-</button>
+            <input type="number" id="qtyInput" class="qty-input" value="${config.qty}" min="50" step="50" onchange="config.qty=Math.max(50, this.value); renderUI();" />
+            <button class="qty-btn" onclick="updateQty(50)">+</button>
+          </div>
+          <button class="btn-primary-saas add-to-cart-btn" onclick="addToCart()" id="addBtn"><i class="fas fa-shopping-cart mr-8"></i> Add to Basket</button>
+        </div>
+        <p style="text-align:right;font-size:12px;color:var(--text-muted);margin-top:12px;font-weight:500;">Minimum node requirement: 50</p>
+      </div>
+    `;
+    
+    document.getElementById('productRoot').innerHTML = html;
+  }
+
+  async function addToCart() {
+    const btn = document.getElementById('addBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-8"></i> QUEUING...';
+
+    const customisationStr = `Width: ${config.width}, Base: ${colors.find(c=>c.hex===config.color)?.name||'Custom'}, Clip: ${config.clip}, Break: ${config.safetyBreak}${config.text ? `, Text: ${config.text}` : ''}${config.file ? `, Logo: Yes` : ''}`;
+
+    try {
+      const res = await fetch('/api/cart', {
+        method: 'POST', headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ 
+          product_id: product.id, 
+          quantity: config.qty,
+          customisation: customisationStr
+        })
+      });
+      if (res.ok) {
+        showToast('Node array added to queue.', 'success');
+        
+        // Pulse cart visually
+        const countEl = document.getElementById('headerCartCount');
+        const cart = await (await fetch('/api/cart')).json();
+        if(countEl) {
+          countEl.textContent = cart.count;
+          countEl.style.transform = 'scale(1.3)';
+          setTimeout(()=>countEl.style.transform='scale(1)', 200);
+        }
+
+        setTimeout(() => window.location.href = '/cart', 1000);
+      } else {
+        const d = await res.json();
+        showToast(d.error || 'Failed to queue module', 'error');
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-database mr-8"></i> Add to Deployment Queue';
+      }
+    } catch(e) {
+      showToast('Network disconnect error', 'error');
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fas fa-database mr-8"></i> Add to Deployment Queue';
+    }
+  }
+
+  function showToast(msg, type) {
+    const t = document.getElementById('toast');
+    const icon = type === 'success' ? '<i class="fas fa-check-circle" style="color:var(--accent-green);margin-right:8px;"></i>' : '<i class="fas fa-exclamation-triangle" style="color:var(--accent-red);margin-right:8px;"></i>';
+    t.innerHTML = icon + msg;
+    t.style.transform = 'translateX(0)';
+    setTimeout(() => t.style.transform = 'translateX(200%)', 3000);
+  }
+
+  async function init() {
+    const path = window.location.pathname; // /product/slug
+    const slug = path.split('/').pop();
+    if (!slug) return window.location.href = '/products';
+
+    try {
+      const res = await fetch('/api/products/' + slug);
+      if (!res.ok) throw new Error('Not found');
+      product = await res.json();
+      basePrice = parseFloat(product.price_from) || 0;
+      
+      document.title = product.name + ' – Deploy | GOTEK';
+      document.getElementById('bcName').textContent = product.name;
+      renderUI();
+    } catch(e) {
+      document.getElementById('productRoot').innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:100px 0;"><h2 class="text-dark font-bold text-2xl mb-16">Hardware Module Not Found</h2><a href="/products" class="btn-secondary-saas">Return to Fleet</a></div>';
+    }
+  }
+
+  // Header init
+  async function initHeader() {
+    try {
+      const [cart, me] = await Promise.all([
+        fetch('/api/cart').then(r => r.json()),
+        fetch('/api/auth/me').then(r => r.json())
+      ]);
+      const countEl = document.getElementById('headerCartCount');
+      if(countEl) countEl.textContent = cart.count || 0;
+      const authLink = document.getElementById('authLink');
+      if (me.user && authLink) {
+        authLink.innerHTML = '<i class="fas fa-user-circle"></i> ' + me.user.name.split(' ')[0];
+        authLink.href = me.user.isAdmin ? '/admin' : '/orders';
+        authLink.classList.add('btn-secondary-saas', 'btn-sm');
+        authLink.classList.remove('nav-link-subtle');
+      }
+    } catch(e) {}
+  }
+
+  // Mobile menu toggle
+  document.getElementById('mobileToggle').addEventListener('click', function() {
+    const menu = document.getElementById('mobileMenu');
+    const icon = this.querySelector('i');
+    if(menu.style.display === 'block') {
+      menu.style.display = 'none';
+      icon.classList.remove('fa-times');
+      icon.classList.add('fa-bars');
+    } else {
+      menu.style.display = 'block';
+      icon.classList.remove('fa-bars');
+      icon.classList.add('fa-times');
+    }
+  });
+
+
+  initHeader();
+  init();
+</script>
+</body>
+</html>

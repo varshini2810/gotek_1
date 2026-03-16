@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Professional ID Card solutions. Custom printed cards, badges, and accessories." />
+  <title>ID Card Design & Accessories Platform</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="light-saas-theme">
+
+<!-- Clean Subtle Backgrounds -->
+<div style="position:fixed; top:-200px; left:-200px; width:700px; height:700px; background:rgba(59,130,246,0.03); filter:blur(150px); border-radius:50%; z-index:0;"></div>
+<div style="position:fixed; bottom:-200px; right:-200px; width:600px; height:600px; background:rgba(59,130,246,0.02); filter:blur(150px); border-radius:50%; z-index:0;"></div>
+
+<!-- ==============================
+     MINIMAL NAVIGATION
+     ============================== -->
+<nav class="saas-nav" id="mainNav">
+  <div class="nav-container">
+    <a href="/" class="nav-logo" aria-label="GOTEK Home">
+      <img src="images/gotek_logo.png" alt="GOTEK Logo" />
+    </a>
+    
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/products">Categories</a></li>
+      <li><a href="/contact">Contact</a></li>
+    </ul>
+
+    <div class="nav-actions">
+      <a href="/login" class="nav-link-subtle" id="authLink">Sign In</a>
+      <a href="/cart" class="nav-cart" id="cartHeaderLink">
+        <i class="fas fa-shopping-cart"></i>
+        <span class="cart-pulse" id="headerCartCount">0</span>
+      </a>
+      <a href="/products" class="btn-primary-saas">Get Started</a>
+      
+      <button class="mobile-menu-btn" id="mobileToggle" aria-label="Menu">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile Menu Dropdown -->
+<div class="mobile-menu" id="mobileMenu">
+  <ul>
+    <li><a href="/">Home</a></li>
+    <li><a href="/products">Categories</a></li>
+    <li><a href="/contact">Contact</a></li>
+    <li style="margin-top:20px;"><a href="/login" class="btn-secondary-saas" style="width:100%; text-align:center;">Sign In</a></li>
+    <li style="margin-top:10px;"><a href="/products" class="btn-primary-saas" style="width:100%; text-align:center;">View Catalog</a></li>
+  </ul>
+</div>
+
+<!-- ==============================
+     CLEAN SAAS HERO
+     ============================== -->
+<section class="mega-hero light-hero">
+  <div class="container hero-content-wrapper">
+    <div class="hero-text-content">
+      <div class="badge-pill light-badge mb-20">
+        <span class="pulse-dot green-dot"></span> Ready to Print
+      </div>
+      <h1 class="mega-headline text-dark">
+        Professional Identity<br>
+        <span class="text-blue">Solutions.</span>
+      </h1>
+      <p class="hero-subheadline text-muted">
+        Design and order custom printed ID cards, professional employee badges, and secure identity accessories in minutes.
+      </p>
+      <div class="hero-cta-group pt-20">
+        <a href="/products" class="btn-primary-saas btn-lg">Explore Catalog <i class="fas fa-arrow-right"></i></a>
+        <a href="/contact" class="btn-secondary-saas btn-lg">Talk to Sales</a>
+      </div>
+      
+      <div class="hero-trust-metrics mt-40">
+        <div class="metric">
+          <span class="metric-val text-dark">100%</span>
+          <span class="metric-lbl text-muted">Satisfaction</span>
+        </div>
+        <div class="metric">
+          <span class="metric-val text-dark">Premium</span>
+          <span class="metric-lbl text-muted">Quality Materials</span>
+        </div>
+        <div class="metric">
+          <span class="metric-val text-dark">24/7</span>
+          <span class="metric-lbl text-muted">Priority Support</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Floating UI Mockup Representation -->
+    <div class="hero-visual">
+       <img src="images/gotek_hero_bg.png" alt="GOTEK Interface" class="floating-mockup shadow-lg border-light" style="border-radius:16px;">
+       <div class="abstract-ring ring-1 border-blue-light"></div>
+       <div class="abstract-ring ring-2 border-blue-light"></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ==============================
+     HARDWARE / PRODUCTS FRONT-END (API FETCHED)
+     ============================== -->
+<section class="hardware-showcase pt-100 pb-100">
+  <div class="container">
+    <div class="section-title-left">
+      <h2 class="text-dark">Popular Categories.</h2>
+      <a href="/products" class="text-blue font-semibold hover-underline">View all categories <i class="fas fa-arrow-right"></i></a>
+    </div>
+
+    <div class="hardware-grid" id="homepageProducts">
+      <!-- Products injected via JS -->
+      <p style="color:#64748b; font-family:monospace;">Fetching catalog from API...</p>
+    </div>
+  </div>
+</section>
+
+<!-- ==============================
+     MINIMAL FOOTER
+     ============================== -->
+<footer class="saas-footer bg-white border-top">
+  <div class="container">
+    <div class="footer-grid pt-60 pb-40">
+      <div class="footer-brand">
+        <img src="images/gotek_logo.png" alt="ID Platform" style="height:24px; margin-bottom:16px;">
+        <p class="text-muted text-sm pr-20" style="line-height:1.6; max-width:280px;">
+          Your trusted source for professional ID cards, lanyards, badge holders, and accessories.
+        </p>
+      </div>
+      
+      <div class="footer-links">
+        <h4 class="text-dark font-semibold mb-16 text-sm">Categories</h4>
+        <ul>
+          <li><a href="/products?category=personalised-id-cards" class="text-muted hover-text-blue text-sm">Personalised ID Cards</a></li>
+          <li><a href="/products?category=employee-id-cards" class="text-muted hover-text-blue text-sm">Employee ID Cards</a></li>
+          <li><a href="/products?category=id-accessories" class="text-muted hover-text-blue text-sm">ID Accessories</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-links">
+        <h4 class="text-dark font-semibold mb-16 text-sm">Company</h4>
+        <ul>
+          <li><a href="#" class="text-muted hover-text-blue text-sm">About Us</a></li>
+          <li><a href="#" class="text-muted hover-text-blue text-sm">Security</a></li>
+          <li><a href="/contact" class="text-muted hover-text-blue text-sm">Contact</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-links">
+        <h4 class="text-dark font-semibold mb-16 text-sm">Legal</h4>
+        <ul>
+          <li><a href="#" class="text-muted hover-text-blue text-sm">Privacy Policy</a></li>
+          <li><a href="#" class="text-muted hover-text-blue text-sm">Terms of Service</a></li>
+          <li><a href="#" class="text-muted hover-text-blue text-sm">SLA</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom border-top flex-between py-20">
+      <p class="text-muted text-xs">&copy; <script>document.write(new Date().getFullYear())</script> ID Card Platform. All rights reserved.</p>
+      <div class="badges text-muted">
+        <i class="fab fa-cc-visa fa-lg mx-2"></i>
+        <i class="fab fa-cc-mastercard fa-lg mx-2"></i>
+        <i class="fab fa-cc-amex fa-lg mx-2"></i>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Cookie Consent -->
+<div class="cookie-consent shadow-lg bg-white border-light" id="cookieConsent">
+  <div class="cookie-content">
+    <div class="cookie-text text-sm text-dark">
+      <i class="fas fa-cookie-bite text-blue mr-2"></i> We use strictly necessary cookies to manage your session. Analytics cookies are optional.
+    </div>
+    <div class="cookie-buttons flex gap-12">
+      <button id="acceptCookies" class="btn-primary-saas btn-sm text-xs">Accept All</button>
+      <button id="rejectCookies" class="btn-secondary-saas btn-sm text-xs">Essential Only</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==============================
+     SCRIPTS
+     ============================== -->
+<script src="js/main.js"></script>
+<script>
+// Check Auth for Nav & Load Header Cart Count
+async function initHeader() {
+  try {
+    const res = await fetch('/api/auth/me');
+    const data = await res.json();
+    const authLink = document.getElementById('authLink');
+    if (data.user && authLink) {
+      authLink.innerHTML = '<i class="fas fa-user-circle"></i> Dashboard';
+      authLink.href = data.user.isAdmin ? '/admin' : '/orders';
+      authLink.classList.remove('nav-link-subtle');
+      authLink.classList.add('btn-secondary-saas');
+      authLink.classList.add('btn-sm');
+    }
+  } catch(e) {}
+
+  try {
+    const cRes = await fetch('/api/cart');
+    const cData = await cRes.json();
+    const countEl = document.getElementById('headerCartCount');
+    if (countEl) countEl.textContent = cData.count || 0;
+  } catch(e) {}
+}
+
+// Fetch featured products for homepage
+async function loadHomeProducts() {
+  try {
+    const res = await fetch('/api/products');
+    let prods = await res.json();
+    if(prods.error) throw new Error(prods.error);
+    
+    // Sort so featured come first, take max 4
+    prods.sort((a,b) => b.featured - a.featured);
+    const topProds = prods.slice(0, 4);
+
+    const container = document.getElementById('homepageProducts');
+    if(!topProds.length) {
+      container.innerHTML = '<p class="text-muted">No products available.</p>';
+      return;
+    }
+
+    container.innerHTML = topProds.map(p => `
+      <div class="hardware-card bg-white border-light shadow-sm">
+        <div class="hc-image">
+          ${p.badge ? `<span class="hc-badge bg-${p.badge_type === 'eco' ? 'green' : p.badge_type === 'express' ? 'red' : 'blue'}-100 text-${p.badge_type === 'eco' ? 'green' : p.badge_type === 'express' ? 'red' : 'blue'}">${p.badge}</span>` : ''}
+          <img src="${p.image || 'images/category_plain.png'}" alt="${p.name}" />
+        </div>
+        <div class="hc-info p-20">
+          <div class="hc-cat text-xs text-muted font-semibold uppercase tracking-wider mb-4">${p.category_name || 'SYSTEM'}</div>
+          <h3 class="text-sm font-bold text-dark mb-8">${p.name}</h3>
+          <div class="hc-footer flex-between items-center mt-16 pt-16 border-top">
+            <div class="hc-price font-bold text-blue">£${parseFloat(p.price_from).toFixed(2)} <span class="text-xs text-muted font-normal">/ node</span></div>
+            <a href="/product/${p.id}" class="hc-btn text-xs font-semibold text-blue hover-underline">Customize <i class="fas fa-arrow-right text-xs ml-4"></i></a>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  } catch(err) {
+    document.getElementById('homepageProducts').innerHTML = '<p class="text-red-500">System Error: Failed to fetch catalog.</p>';
+  }
+}
+
+// Scroll effect for nav
+window.addEventListener('scroll', () => {
+  const nav = document.getElementById('mainNav');
+  if (window.scrollY > 20) {
+    nav.classList.add('scrolled', 'shadow-sm', 'bg-white', 'border-bottom');
+  } else {
+    nav.classList.remove('scrolled', 'shadow-sm', 'bg-white', 'border-bottom');
+  }
+});
+
+// Mobile menu toggle
+document.getElementById('mobileToggle').addEventListener('click', function() {
+  const menu = document.getElementById('mobileMenu');
+  const icon = this.querySelector('i');
+  if(menu.style.display === 'block') {
+    menu.style.display = 'none';
+    icon.classList.remove('fa-times');
+    icon.classList.add('fa-bars');
+  } else {
+    menu.style.display = 'block';
+    icon.classList.remove('fa-bars');
+    icon.classList.add('fa-times');
+  }
+});
+
+initHeader();
+loadHomeProducts();
+</script>
+
+</body>
+</html>

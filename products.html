@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Product Catalog – ID Card Platform</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* Scope specific overrides for products page SaaS theme */
+    .products-page { 
+      padding: 120px 0 60px; 
+      min-height: 100vh; 
+      position: relative;
+      z-index: 2;
+    }
+    .products-layout { 
+      display: grid; 
+      grid-template-columns: 260px 1fr; 
+      gap: 40px; 
+      align-items: start; 
+    }
+
+    /* Light Sidebar */
+    .filter-sidebar { 
+      background: #ffffff; 
+      border: 1px solid var(--border-light); 
+      border-radius: 12px; 
+      padding: 24px; 
+      position: sticky; 
+      top: 100px;
+      box-shadow: var(--shadow-sm);
+    }
+    .filter-sidebar h3 { 
+      font-size: 14px; 
+      font-weight: 700; 
+      color: var(--text-main); 
+      text-transform: uppercase; 
+      letter-spacing: 1px; 
+      margin-bottom: 20px; 
+      padding-bottom: 12px; 
+      border-bottom: 1px solid var(--border-light); 
+    }
+    .filter-cat { 
+      display: block; 
+      padding: 10px 14px; 
+      font-size: 14px; 
+      color: var(--text-muted); 
+      border-radius: 8px; 
+      cursor: pointer; 
+      transition: all 0.2s ease; 
+      margin-bottom: 6px; 
+    }
+    .filter-cat:hover { 
+      background: var(--bg-surface-alt); 
+      color: var(--text-main); 
+      transform: translateX(4px); 
+    }
+    .filter-cat.active { 
+      background: var(--primary-blue-light); 
+      color: var(--primary-blue); 
+      font-weight: 600; 
+    }
+    .filter-cat .cat-count { 
+      float: right; 
+      background: var(--bg-surface-alt); 
+      color: var(--text-muted);
+      border-radius: 12px; 
+      padding: 2px 8px; 
+      font-size: 11px; 
+      font-weight: 600; 
+    }
+    .filter-cat.active .cat-count { 
+      background: #fff; 
+      color: var(--primary-blue);
+    }
+
+    /* Top bar */
+    .products-topbar { 
+      display: flex; 
+      align-items: center; 
+      justify-content: space-between; 
+      margin-bottom: 30px; 
+      flex-wrap: wrap; 
+      gap: 15px; 
+    }
+    .products-topbar h1 { 
+      font-size: 36px; 
+      font-weight: 800; 
+      color: var(--text-main); 
+      letter-spacing: -1px; 
+    }
+    .products-topbar .result-count { 
+      font-size: 14px; 
+      color: var(--text-muted); 
+      margin-top: 4px; 
+    }
+    .sort-select { 
+      padding: 10px 16px; 
+      border: 1px solid var(--border-light); 
+      border-radius: 8px; 
+      font-size: 14px; 
+      outline: none; 
+      font-family: 'Inter', sans-serif; 
+      color: var(--text-main); 
+      cursor: pointer; 
+      background: #ffffff; 
+      transition: border-color 0.2s; 
+    }
+    .sort-select:focus { 
+      border-color: var(--primary-blue); 
+      box-shadow: 0 0 0 3px rgba(59,130,246,0.1); 
+    }
+
+    /* Product grid */
+    .pg-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    
+    /* Empty state */
+    .empty-state { text-align: center; padding: 60px 20px; grid-column: 1/-1; background: #ffffff; border-radius: 12px; border: 1px dashed var(--border-focus); }
+    .empty-state i { font-size: 50px; color: var(--text-light); display: block; margin-bottom: 16px; }
+
+    /* Loading skeleton */
+    .skeleton-card { background: #ffffff; border-radius: 12px; border: 1px solid var(--border-light); overflow: hidden; }
+    .skel-img { height: 200px; background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%); background-size: 200% 100%; animation: shimmer 1.4s infinite; }
+    .skel-line { height: 14px; background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%); background-size: 200% 100%; animation: shimmer 1.4s infinite; border-radius: 4px; margin: 16px 20px 8px; }
+    .skel-line.short { width: 50%; }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+    @media (max-width: 900px) { .products-layout { grid-template-columns: 1fr; } .filter-sidebar { position: static; } }
+    @media (max-width: 640px) { .pg-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 400px) { .pg-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body class="light-saas-theme">
+
+<!-- Ambient Light Backgrounds -->
+<div style="position:fixed; top:-200px; left:-200px; width:700px; height:700px; background:rgba(59,130,246,0.03); filter:blur(150px); border-radius:50%; z-index:0;"></div>
+<div style="position:fixed; bottom:-200px; right:-200px; width:600px; height:600px; background:rgba(59,130,246,0.02); filter:blur(150px); border-radius:50%; z-index:0;"></div>
+
+<!-- Minimal Glass Navigation -->
+<nav class="saas-nav bg-white border-bottom shadow-sm" id="mainNav" style="padding: 12px 0;">
+  <div class="nav-container">
+    <a href="/" class="nav-logo" aria-label="GOTEK Home">
+      <img src="images/gotek_logo.png" alt="GOTEK Logo" />
+    </a>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/products" class="active">Categories</a></li>
+      <li><a href="/contact">Contact</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="/login" class="nav-link-subtle" id="authLink">Sign In</a>
+      <a href="/cart" class="nav-cart" id="cartHeaderLink">
+        <i class="fas fa-shopping-cart"></i>
+        <span class="cart-pulse" id="headerCartCount">0</span>
+      </a>
+      <a href="/products" class="btn-primary-saas btn-sm">Get Started</a>
+      <button class="mobile-menu-btn" id="mobileToggle" aria-label="Menu">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile Menu Dropdown -->
+<div class="mobile-menu" id="mobileMenu">
+  <ul>
+    <li><a href="/">Home</a></li>
+    <li><a href="/products">Categories</a></li>
+    <li><a href="/contact">Contact</a></li>
+    <li style="margin-top:20px;"><a href="/login" class="btn-secondary-saas" style="width:100%; text-align:center;">Sign In</a></li>
+  </ul>
+</div>
+
+<!-- Products Page -->
+<section class="products-page">
+  <div class="container" style="position: relative; z-index: 5;">
+    
+    <!-- Breadcrumb -->
+    <div style="margin-bottom: 24px;">
+      <span style="color:var(--text-muted);font-size:13px;font-weight:500;">
+        <a href="/" style="color:var(--primary-blue);text-decoration:none;">Dashboard</a> <i class="fas fa-chevron-right" style="font-size:10px;margin:0 8px;color:var(--text-light)"></i> <span id="breadcrumbCat" style="color:var(--text-main);">Product Catalog</span>
+      </span>
+    </div>
+
+    <div class="products-layout">
+      <!-- Sidebar -->
+      <aside class="filter-sidebar">
+        <h3><i class="fas fa-layer-group text-blue" style="margin-right:8px;"></i>Categories</h3>
+        <div id="categoryFilters">
+          <div style="padding:8px;color:var(--text-muted);font-size:13px;"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
+        </div>
+      </aside>
+
+      <!-- Main content -->
+      <div>
+        <div class="products-topbar">
+          <div>
+            <h1 id="pageTitle">Product Catalog</h1>
+            <p class="result-count" id="resultCount">Syncing data...</p>
+          </div>
+          <select class="sort-select shadow-sm" id="sortSelect" onchange="applySort()">
+            <option value="default">Sort: Default</option>
+            <option value="price-asc">Price: Low to High</option>
+            <option value="price-desc">Price: High to Low</option>
+            <option value="name-asc">Name: A–Z</option>
+          </select>
+        </div>
+        <div class="pg-grid hardware-grid" id="productsGrid">
+          <!-- Skeleton loaders -->
+          <div class="skeleton-card"><div class="skel-img"></div><div class="skel-line"></div><div class="skel-line short"></div><div class="skel-line short"></div></div>
+          <div class="skeleton-card"><div class="skel-img"></div><div class="skel-line"></div><div class="skel-line short"></div><div class="skel-line short"></div></div>
+          <div class="skeleton-card"><div class="skel-img"></div><div class="skel-line"></div><div class="skel-line short"></div><div class="skel-line short"></div></div>
+          <div class="skeleton-card"><div class="skel-img"></div><div class="skel-line"></div><div class="skel-line short"></div><div class="skel-line short"></div></div>
+          <div class="skeleton-card"><div class="skel-img"></div><div class="skel-line"></div><div class="skel-line short"></div><div class="skel-line short"></div></div>
+          <div class="skeleton-card"><div class="skel-img"></div><div class="skel-line"></div><div class="skel-line short"></div><div class="skel-line short"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Minimal Footer -->
+<footer class="saas-footer bg-white border-top mt-40 pt-20 pb-20 text-center">
+  <div class="container flex-between">
+    <p class="text-muted text-xs">&copy; <script>document.write(new Date().getFullYear())</script> ID Card Platform. All rights reserved.</p>
+    <div class="badges text-muted">
+      <i class="fab fa-cc-visa mx-2"></i>
+      <i class="fab fa-cc-mastercard mx-2"></i>
+      <i class="fab fa-cc-amex mx-2"></i>
+    </div>
+  </div>
+</footer>
+
+<!-- Toast -->
+<div id="toast" style="position:fixed;bottom:30px;right:30px;background:#ffffff;border:1px solid var(--border-light);color:var(--text-main);padding:16px 24px;border-radius:8px;font-size:14px;font-weight:600;z-index:9999;transform:translateX(200%);transition:transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);box-shadow:var(--shadow-lg);"></div>
+
+<script>
+  // ── State ──
+  let allProducts = [];
+  let allCategories = [];
+  let activeCategory = null;
+
+  function showToast(msg, type) {
+    const t = document.getElementById('toast');
+    const icon = type === 'success' ? '<i class="fas fa-check-circle" style="color:var(--accent-green);margin-right:8px;"></i>' : '<i class="fas fa-exclamation-circle" style="color:var(--accent-red);margin-right:8px;"></i>';
+    t.innerHTML = icon + msg;
+    t.style.transform = 'translateX(0)';
+    clearTimeout(t._to);
+    t._to = setTimeout(() => t.style.transform = 'translateX(200%)', 4000);
+  }
+
+  async function addToCart(id, name) {
+    const res = await fetch('/api/cart', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ product_id: id, quantity: 1 })
+    });
+    if (res.ok) {
+      showToast('Deployed ' + name + ' to queue.', 'success');
+      const cart = await (await fetch('/api/cart')).json();
+      const countEl = document.getElementById('headerCartCount');
+      if(countEl) {
+        countEl.textContent = cart.count;
+        countEl.style.transform = 'scale(1.3)';
+        setTimeout(()=>countEl.style.transform='scale(1)', 200);
+      }
+    } else {
+      const d = await res.json();
+      showToast(d.error || 'Deployment failed.', 'error');
+    }
+  }
+
+  function applySort() {
+    const sort = document.getElementById('sortSelect').value;
+    let filtered = activeCategory
+      ? allProducts.filter(p => p.category_slug === activeCategory)
+      : [...allProducts];
+    if (sort === 'price-asc') filtered.sort((a, b) => a.price_from - b.price_from);
+    else if (sort === 'price-desc') filtered.sort((a, b) => b.price_from - a.price_from);
+    else if (sort === 'name-asc') filtered.sort((a, b) => a.name.localeCompare(b.name));
+    renderProducts(filtered);
+  }
+
+  function renderProducts(products) {
+    const grid = document.getElementById('productsGrid');
+    document.getElementById('resultCount').textContent = products.length + ' active ' + (products.length !== 1 ? 'items' : 'item') + ' found';
+
+    if (!products.length) {
+      grid.innerHTML = `<div class="empty-state">
+        <i class="fas fa-satellite"></i>
+        <h3 class="text-dark font-bold text-lg mb-8">No hardware matched</h3>
+        <p class="text-muted mb-20">Try adjusting your filters or category parameters.</p>
+        <a href="/products" class="btn-secondary-saas btn-sm">Reset Filters</a>
+      </div>`;
+      return;
+    }
+
+    grid.innerHTML = products.map(p => {
+      const badge = p.badge
+        ? `<span class="hc-badge bg-${p.badge_type === 'eco' ? 'green' : p.badge_type === 'express' ? 'red' : 'blue'}-100 text-${p.badge_type === 'eco' ? 'green' : p.badge_type === 'express' ? 'red' : 'blue'}">${p.badge}</span>` : '';
+      
+      const imgHtml = p.image
+        ? `<img src="${p.image}" alt="${p.name}" onerror="this.src='images/category_plain.png'"/>`
+        : `<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:40px;color:var(--text-light);"><i class="fas fa-microchip"></i></div>`;
+
+      return `
+      <div class="hardware-card bg-white border-light shadow-sm">
+        <div class="hc-image">
+          ${badge}
+          ${imgHtml}
+        </div>
+        <div class="hc-info p-20 flex" style="flex-direction:column; flex:1;">
+          <div class="hc-cat text-xs text-muted font-semibold uppercase tracking-wider mb-4">${p.category_name || 'SYSTEM'}</div>
+          <h3 class="text-sm font-bold text-dark mb-8" style="flex:1;">${p.name}</h3>
+          
+          <div class="hc-footer mt-16 pt-16 border-top">
+            <div class="hc-price font-bold text-blue mb-16">£${parseFloat(p.price_from).toFixed(2)} <span class="text-xs text-muted font-normal">/ node</span></div>
+            <div style="display:flex; gap:8px;">
+              <a href="/product/${p.slug}" class="btn-secondary-saas" style="flex:1; padding:8px; font-size:12px;">Inspect</a>
+              <button onclick="addToCart(${p.id},'${p.name.replace(/'/g,"\\'")}');return false;"
+                class="btn-primary-saas" style="flex:1; padding:8px; font-size:12px;">
+                <i class="fas fa-plus mr-4"></i> Queue
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  function setActiveCategory(slug, name) {
+    activeCategory = slug;
+    // Update URL without reload
+    const url = slug ? `/products?category=${slug}` : '/products';
+    window.history.pushState({}, '', url);
+    // Update breadcrumb + title
+    document.getElementById('breadcrumbCat').textContent = name || 'Hardware Fleet';
+    document.getElementById('pageTitle').textContent = name || 'Hardware Fleet';
+    document.title = (name || 'Fleet') + ' – GOTEK';
+    // Update sidebar active state
+    document.querySelectorAll('.filter-cat').forEach(el => {
+      el.classList.toggle('active', el.dataset.slug === (slug || ''));
+    });
+    applySort();
+  }
+
+  async function init() {
+    // Read URL param
+    const params = new URLSearchParams(window.location.search);
+    const catParam = params.get('category') || '';
+
+    // Fetch everything in parallel
+    const [pRes, cRes] = await Promise.all([fetch('/api/products'), fetch('/api/categories')]);
+    allProducts = await pRes.json();
+    allCategories = await cRes.json();
+
+    // Build sidebar
+    const sidebar = document.getElementById('categoryFilters');
+    const allLink = `<a href="/products" class="filter-cat ${!catParam ? 'active' : ''}" data-slug="" onclick="e=event;e.preventDefault();setActiveCategory('','All Nodes')">
+      All Nodes <span class="cat-count">${allProducts.length}</span>
+    </a>`;
+    sidebar.innerHTML = allLink + allCategories.map(cat => {
+      const count = allProducts.filter(p => p.category_slug === cat.slug).length;
+      const isActive = catParam === cat.slug;
+      return `<a href="/products?category=${cat.slug}" class="filter-cat ${isActive ? 'active' : ''}" data-slug="${cat.slug}"
+        onclick="e=event;e.preventDefault();setActiveCategory('${cat.slug}','${cat.name}')">
+        ${cat.name} <span class="cat-count">${count}</span>
+      </a>`;
+    }).join('');
+
+    // Apply initial filter
+    if (catParam) {
+      const cat = allCategories.find(c => c.slug === catParam);
+      setActiveCategory(catParam, cat?.name || catParam);
+    } else {
+      setActiveCategory('', 'Product Catalog');
+    }
+  }
+
+  // Header init
+  async function initHeader() {
+    try {
+      const [cart, me] = await Promise.all([
+        fetch('/api/cart').then(r => r.json()),
+        fetch('/api/auth/me').then(r => r.json())
+      ]);
+      const countEl = document.getElementById('headerCartCount');
+      if(countEl) countEl.textContent = cart.count || 0;
+      const authLink = document.getElementById('authLink');
+      if (me.user && authLink) {
+        authLink.innerHTML = '<i class="fas fa-user-circle"></i> ' + me.user.name.split(' ')[0];
+        authLink.href = me.user.isAdmin ? '/admin' : '/orders';
+        authLink.classList.add('btn-secondary-saas', 'btn-sm');
+        authLink.classList.remove('nav-link-subtle');
+      }
+    } catch(e) {}
+  }
+
+  // Mobile menu toggle
+  document.getElementById('mobileToggle').addEventListener('click', function() {
+    const menu = document.getElementById('mobileMenu');
+    const icon = this.querySelector('i');
+    if(menu.style.display === 'block') {
+      menu.style.display = 'none';
+      icon.classList.remove('fa-times');
+      icon.classList.add('fa-bars');
+    } else {
+      menu.style.display = 'block';
+      icon.classList.remove('fa-bars');
+      icon.classList.add('fa-times');
+    }
+  });
+
+  initHeader();
+  init();
+</script>
+</body>
+</html>
