@@ -236,7 +236,7 @@
         <p class="product-desc">${product.description || 'Customise your product with the options below.'}</p>
         
         <div class="price-display">
-          £${unitPrice.toFixed(2)} <span>/ item (ex VAT)</span>
+          £${unitPrice.toFixed(2)} <span>/ node (ex VAT)</span>
           <br><span style="font-size:18px;color:var(--text-main);font-weight:700;">Order Total: £${totalPrice.toFixed(2)}</span>
         </div>
 
@@ -297,7 +297,7 @@
             <input type="number" id="qtyInput" class="qty-input" value="${config.qty}" min="50" step="50" onchange="config.qty=Math.max(50, this.value); renderUI();" />
             <button class="qty-btn" onclick="updateQty(50)">+</button>
           </div>
-          <button class="btn-primary-saas add-to-cart-btn" onclick="addToCart()" id="addBtn"><i class="fas fa-shopping-cart mr-8"></i> Add to Basket</button>
+          <button class="btn-primary-saas add-to-cart-btn" onclick="addToCart()" id="addBtn"><i class="fas fa-plus mr-8"></i> Add to Deployment Queue</button>
         </div>
         <p style="text-align:right;font-size:12px;color:var(--text-muted);margin-top:12px;font-weight:500;">Minimum order requirement: 50</p>
       </div>
@@ -339,12 +339,12 @@
         const d = await res.json();
         showToast(d.error || 'Failed to add item', 'error');
         btn.disabled = false;
-        btn.innerHTML = '<i class="fas fa-shopping-cart mr-8"></i> Add to Basket';
+        btn.innerHTML = '<i class="fas fa-plus mr-8"></i> Add to Deployment Queue';
       }
     } catch(e) {
       showToast('Network disconnect error', 'error');
       btn.disabled = false;
-      btn.innerHTML = '<i class="fas fa-shopping-cart mr-8"></i> Add to Basket';
+      btn.innerHTML = '<i class="fas fa-plus mr-8"></i> Add to Deployment Queue';
     }
   }
 
